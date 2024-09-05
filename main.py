@@ -18,8 +18,6 @@ screen = pygame.display.set_mode((width, height))
 # Colores
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
 
 # Dibujar el menú en la pantalla
 def draw_menu():
@@ -30,11 +28,13 @@ def draw_menu():
     quick_sort_text = font.render("2. Quick Sort", True, WHITE)
     merge_sort_text = font.render("3. Merge Sort", True, WHITE)
     insertion_sort_text = font.render("4. Insertion Sort", True, WHITE)
+    exit_text = font.render("4. Exit", True, WHITE)
     
     screen.blit(title, (width // 2 - title.get_width() // 2, 50))
     screen.blit(bubble_sort_text, (width // 2 - bubble_sort_text.get_width() // 2, 150))
     screen.blit(quick_sort_text, (width // 2 - quick_sort_text.get_width() // 2, 200))
     screen.blit(merge_sort_text, (width // 2 - merge_sort_text.get_width() // 2, 250))
+    screen.blit(insertion_sort_text, (width // 2 - insertion_sort_text.get_width() // 2, 300))
     screen.blit(insertion_sort_text, (width // 2 - insertion_sort_text.get_width() // 2, 300))
     pygame.display.flip()
 
@@ -72,20 +72,23 @@ def main():
             elif selected_algorithm == "merge_sort":
                 merge_sort(array, screen)
             elif selected_algorithm == "insertion_sort":
-                merge_sort(array, screen)
+                insertion_sort(array, screen)
             
-            # Esperar a que el usuario cierre la ventana o vuelva al menú
-            while True:
+            # Esperar a que el usuario presione 'Q' para volver al menú o cierre la ventana
+            waiting_for_input = True
+            while waiting_for_input:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
                         sys.exit()
-                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
-                        selected_algorithm = None
-                        break
-                if selected_algorithm is None:
-                    break
-        pygame.display.flip()
+                    elif event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_q:  # Volver al menú al presionar 'Q'
+                            selected_algorithm = None
+                            waiting_for_input = False
+                        elif event.key == pygame.K_BACKSPACE:
+                            selected_algorithm = None
+                            waiting_for_input = False
+                pygame.display.flip()
 
 if __name__ == "__main__":
     main()

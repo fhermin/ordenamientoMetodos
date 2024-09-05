@@ -16,6 +16,11 @@ def draw_array(screen, array, color_positions=None, clear_bg=True):
         bar_height = int(val / max(array) * max_height)
         pygame.draw.rect(screen, color, pygame.Rect(i * bar_width, max_height - bar_height, bar_width, bar_height))
 
+  
+    font = pygame.font.Font(None, 36)  
+    text = font.render("Merge Sort", True, (255, 255, 255))  
+    screen.blit(text, (10, 10))  
+
     pygame.display.update()
 
 # Función de Merge Sort con visualización
@@ -66,6 +71,7 @@ def merge(array, screen, start, mid, end):
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((600, 400))
+
     pygame.display.set_caption("Visualización Merge Sort")
     
     array = [random.randint(10, 400) for _ in range(20)]  # Generar 20 números aleatorios
