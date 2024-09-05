@@ -1,14 +1,4 @@
 import pygame
-import random
-import sys
-
-# Inicialización de Pygame
-pygame.init()
-
-# Dimensiones de la pantalla
-width = 800
-height = 600
-screen = pygame.display.set_mode((width, height))
 
 # Colores
 BLACK = (0, 0, 0)
@@ -16,7 +6,8 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 
-def draw_elements(array, color_positions={}):
+# Función para dibujar los elementos del arreglo
+def draw_elements(screen, array, color_positions={}, width=800, height=600):
     screen.fill(BLACK)
     num_elements = len(array)
     bar_width = width // num_elements
@@ -28,35 +19,32 @@ def draw_elements(array, color_positions={}):
         pygame.draw.rect(screen, color, (i * bar_width, height - bar_height, bar_width, bar_height))
     pygame.display.flip()
 
-def bubble_sort_visual(array):
+# Bubble Sort con visualización
+def bubble_sort_visual(array, screen, width=800, height=600):
     n = len(array)
     for i in range(n):
-        for j in range(0, n-i-1):
-            draw_elements(array, {j: RED, j+1: GREEN})
+        for j in range(0, n - i - 1):
+            draw_elements(screen, array, {j: RED, j + 1: GREEN}, width, height)
             pygame.time.delay(100)
-            if array[j] > array[j+1]:
-                array[j], array[j+1] = array[j+1], array[j]
-                draw_elements(array, {j: GREEN, j+1: RED})
+            if array[j] > array[j + 1]:
+                array[j], array[j + 1] = array[j + 1], array[j]
+                draw_elements(screen, array, {j: GREEN, j + 1: RED}, width, height)
                 pygame.time.delay(100)
-    draw_elements(array)
+    draw_elements(screen, array, width=width, height=height)
 
-# Generar 20 elementos aleatorios entre 1 y 100
-elements = [random.randint(1, 100) for _ in range(20)]
-
-# Imprimir valores iniciales
-print("Valores iniciales:", elements)
-
-# Bucle principal
-running = True
-bubble_sort_visual(elements)
-
-# Imprimir valores finales
-print("Valores finales:", elements)
-
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-pygame.quit()
-sys.exit()
+# Test básico
+if __name__ == "__main__":
+    pygame.init()
+    screen = pygame.display.set_mode((800, 600))
+    pygame.display.set_caption("Visualización Bubble Sort")
+    
+    array = [random.randint(1, 100) for _ in range(20)]  # Generar 20 números aleatorios
+    bubble_sort_visual(array, screen)
+    
+    # Esperar a que el usuario cierre la ventana
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+    pygame.quit()

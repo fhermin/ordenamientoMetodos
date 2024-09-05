@@ -1,40 +1,80 @@
-def mergeSort( array ):
-    if len(array) == 1:
-        return array
+import pygame
+
+# Función para dibujar el array en la pantalla
+def draw_array(screen, array, color_positions=None, clear_bg=True):
+    if clear_bg:
+        screen.fill((0, 0, 0))  # Fondo negro
     
-    middle = len(array) // 2
-    left_array = array[:middle]
-    right_array = array[middle:]
+    if color_positions is None:
+        color_positions = {}
+    
+    bar_width = screen.get_width() // len(array)
+    max_height = screen.get_height()
 
-    sorted_left = mergeSort(left_array)
-    sorted_right = mergeSort(right_array)
+    for i, val in enumerate(array):
+        color = color_positions.get(i, (255, 255, 255))  # Blanco por defecto
+        bar_height = int(val / max(array) * max_height)
+        pygame.draw.rect(screen, color, pygame.Rect(i * bar_width, max_height - bar_height, bar_width, bar_height))
 
-    return Merge(sorted_left , sorted_right)
+    pygame.display.update()
 
+# Función de Merge Sort con visualización
+def merge_sort(array, screen, start=0, end=None):
+    if end is None:
+        end = len(array)
+    
+    if end - start > 1:
+        mid = (start + end) // 2
+        merge_sort(array, screen, start, mid)
+        merge_sort(array, screen, mid, end)
+        merge(array, screen, start, mid, end)
 
-def Merge(left_array, right_array):
-    arr_resultado = []
-    while len(left_array) > 0 and len(right_array) > 0 :
-        if left_array[0] > right_array[0]:
-            arr_resultado.append(right_array[0])
-            right_array.pop(0)
+def merge(array, screen, start, mid, end):
+    left = array[start:mid]
+    right = array[mid:end]
+    
+    i = 0
+    j = 0
+    k = start
+
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            array[k] = left[i]
+            i += 1
         else:
-            arr_resultado.append(left_array[0])
-            left_array.pop(0)
+            array[k] = right[j]
+            j += 1
+        draw_array(screen, array, {k: (0, 255, 0)})  # Verde para mostrar la posición que está siendo actualizada
+        pygame.time.delay(50)
+        k += 1
+
+    while i < len(left):
+        array[k] = left[i]
+        draw_array(screen, array, {k: (0, 0, 255)})  # Azul para las posiciones ya ordenadas de la izquierda
+        pygame.time.delay(50)
+        i += 1
+        k += 1
+
+    while j < len(right):
+        array[k] = right[j]
+        draw_array(screen, array, {k: (255, 0, 0)})  # Rojo para las posiciones ya ordenadas de la derecha
+        pygame.time.delay(50)
+        j += 1
+        k += 1
+
+# Test básico dentro del archivo
+if __name__ == "__main__":
+    pygame.init()
+    screen = pygame.display.set_mode((600, 400))
+    pygame.display.set_caption("Visualización Merge Sort")
     
-    while len(left_array) > 0 :
-        arr_resultado.append(left_array[0])
-        left_array.pop(0)
-
-    while len(right_array) > 0:
-        arr_resultado.append(right_array[0])
-        right_array.pop(0)
+    array = [random.randint(10, 400) for _ in range(20)]  # Generar 20 números aleatorios
+    merge_sort(array, screen)
     
-    return arr_resultado
-
-
-scores = [56,12,87,15,68,2,78,45]
-print("Antes de ordenarse : ")
-print(scores)
-print("Despues de ordenarse : ")
-print(mergeSort(scores))
+    # Esperar a que el usuario cierre la ventana
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+    pygame.quit()
