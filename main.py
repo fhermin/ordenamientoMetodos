@@ -99,5 +99,6 @@ def main():
                 pygame.display.flip()
 
 if __name__ == "__main__":
+    pygame.display.set_caption("Algoritmos de Ordenamiento Fhermin")
     main()
     pygame.quit()
