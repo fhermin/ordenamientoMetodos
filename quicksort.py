@@ -1,3 +1,25 @@
+def quick_sort(array, low, high):
+    if low < high:
+        aux = partition(array, low, high)
+        quick_sort(array, low, aux - 1)
+        quick_sort(array, aux + 1, high)
+
+def partition(array, low, high):
+    pivot = array[high]
+    i = low - 1
+    for j in range(low, high):
+        if array[j] <= pivot:
+            i = i + 1
+            array[i], array[j] = array[j], array[i]
+    array[i + 1], array[high] = array[high], array[i + 1]
+    return i + 1
+
+scores = [56, 12, 87, 15, 68, 2, 78, 45]
+print("Antes de ordenarse:")
+print(scores)
+quick_sort(scores, 0, len(scores) - 1)
+print("Despues de ordenarse:")
+print(scores)
 import pygame
 
 # Función para dibujar el array en la pantalla
@@ -15,6 +37,11 @@ def draw_array(screen, array, color_positions=None, clear_bg=True):
         color = color_positions.get(i, (255, 255, 255))  # Blanco por defecto
         bar_height = int(val / max(array) * max_height)
         pygame.draw.rect(screen, color, pygame.Rect(i * bar_width, max_height - bar_height, bar_width, bar_height))
+
+      
+    font = pygame.font.Font(None, 36)  
+    text = font.render("Quick Sort", True, (255, 255, 255))  
+    screen.blit(text, (10, 10))  
 
     pygame.display.update()
 

@@ -17,6 +17,11 @@ def draw_array(screen, array, color_positions=None, clear_bg=True):
         bar_height = int(val / max(array) * max_height)
         pygame.draw.rect(screen, color, pygame.Rect(i * bar_width, max_height - bar_height, bar_width, bar_height))
 
+      
+    font = pygame.font.Font(None, 36)  
+    text = font.render("Insertion Sort", True, (255, 255, 255))  
+    screen.blit(text, (10, 10))  
+
     pygame.display.update()
 
 def insertion_sort(array, screen):

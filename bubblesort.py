@@ -9,6 +9,10 @@ GREEN = (0, 255, 0)
 # Función para dibujar los elementos del arreglo
 def draw_elements(screen, array, color_positions={}, width=800, height=600):
     screen.fill(BLACK)
+    font = pygame.font.Font(None, 36)
+    title = font.render("BubbleSort", True, WHITE)
+
+    screen.blit(title, (65 - title.get_width() // 2, 10))
     num_elements = len(array)
     bar_width = width // num_elements
     for i, value in enumerate(array):
