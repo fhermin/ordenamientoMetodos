@@ -28,14 +28,18 @@ def draw_menu():
     quick_sort_text = font.render("2. Quick Sort", True, WHITE)
     merge_sort_text = font.render("3. Merge Sort", True, WHITE)
     insertion_sort_text = font.render("4. Insertion Sort", True, WHITE)
-    exit_text = font.render("4. Exit", True, WHITE)
+    exit_text = font.render("5. Exit", True, WHITE)
+
+    font = pygame.font.Font(None, 36)  
+    text = font.render("Creado por Fhermin", True, (255, 255, 255))  
+    screen.blit(text, (width -(text.get_width() + 10), height - 40))  
     
     screen.blit(title, (width // 2 - title.get_width() // 2, 50))
     screen.blit(bubble_sort_text, (width // 2 - bubble_sort_text.get_width() // 2, 150))
     screen.blit(quick_sort_text, (width // 2 - quick_sort_text.get_width() // 2, 200))
     screen.blit(merge_sort_text, (width // 2 - merge_sort_text.get_width() // 2, 250))
     screen.blit(insertion_sort_text, (width // 2 - insertion_sort_text.get_width() // 2, 300))
-    screen.blit(insertion_sort_text, (width // 2 - insertion_sort_text.get_width() // 2, 300))
+    screen.blit(exit_text, (width // 2 - exit_text.get_width() // 2, 350))
     pygame.display.flip()
 
 # Generar un array aleatorio para ordenar
@@ -62,6 +66,8 @@ def main():
                     selected_algorithm = "merge_sort"
                 elif event.key == pygame.K_4:  # Insertion Sort
                     selected_algorithm = "insertion_sort"
+                elif event.key == pygame.K_5:  # Exit Button
+                    selected_algorithm = "exit_lol"
         
         if selected_algorithm:
             array = generate_random_array()
@@ -73,6 +79,8 @@ def main():
                 merge_sort(array, screen)
             elif selected_algorithm == "insertion_sort":
                 insertion_sort(array, screen)
+            elif selected_algorithm == "exit_lol":
+                pygame.quit()
             
             # Esperar a que el usuario presione 'Q' para volver al menú o cierre la ventana
             waiting_for_input = True
